@@ -10,6 +10,10 @@ function App() {
     AddText(alltext.filter((t)=> t !== element))
   }
   function AddTask(){
+    if (alltext.length === 0){
+      return <h1>Список на данный момент пуст</h1>
+    }
+    
     let Alltask = alltext.map(item => (
       <div>
         <h1>{item.text}</h1>
@@ -44,6 +48,9 @@ function App() {
       </button>
 
        <div>{AddTask()}</div>
+       <div>
+        {text == "Котик" && (<h1>❤️❤️❤️</h1>) }
+       </div>
     </div>
   )
 }
