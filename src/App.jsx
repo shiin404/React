@@ -1,27 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
 
   let [text,Settext] = useState('')
   let [description,Setdes] = useState('')
-  let [alltext,AddText] = useState([])
+  let [alltext, AddText] = useState(()=>{
+    const task = localStorage.getItem('tasks')
+    return task ? JSON.parse(task) : []
+  })
+
+  useEffect(()=>{
+    let saved = localStorage.getItem('tasks')
+    if (saved){
+      AddText(JSON.parse(saved))
+    }},[])
+
+  useEffect(()=>{
+    localStorage.setItem('tasks',JSON.stringify(alltext))
+  },[alltext])
 
   function RemoveTask(element){
     AddText(alltext.filter((t)=> t !== element))
-  }
-  function AddTask(){
-    if (alltext.length === 0){
-      return <h1>Список на данный момент пуст</h1>
-    }
-    
-    let Alltask = alltext.map(item => (
-      <div>
-        <h1>{item.text}</h1>
-        <h3>{item.description}</h3>
-        <button onClick={() => RemoveTask(item)}>Удалить❌</button>
-      </div>
-    ))
-    return Alltask
   }
   return(
     <div>
@@ -47,10 +46,20 @@ function App() {
         }}>Создать запись
       </button>
 
-       <div>{AddTask()}</div>
-       <div>
+      <div>
+        {alltext.length === 0 ?
+        <h1>Тут пока пусто </h1> :
+        alltext.map(item => (
+        <div>
+          <h1>{item.text}</h1>
+          <h3>{item.description}</h3>
+          <button onClick={() => RemoveTask(item)}>Удалить❌</button>
+        </div>
+        ))}
+      </div>
+      <div>
         {text == "Котик" && (<h1>❤️❤️❤️</h1>) }
-       </div>
+      </div>
     </div>
   )
 }
