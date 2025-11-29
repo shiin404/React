@@ -4,7 +4,9 @@ function App() {
 
   let [text,Settext] = useState('')
   let [alltext,AddText] = useState([])
-  
+  function RemoveTask(element){
+    AddText(alltext.filter((t)=> t !== element))
+  }
   return(
     <div>
       <h1>Todo приложение</h1>
@@ -16,7 +18,13 @@ function App() {
         AddText([...alltext,text])
         Settext('')}}>Создать запись</button>
 
-       <div>{alltext.map((item) => <h2>{item}</h2> )}</div>
+       <div>{alltext.map((item) => 
+      <div> 
+        <h1>{item}</h1>
+        <button onClick={() => RemoveTask(item)}>Удалить</button>
+      </div>
+      )}
+       </div>
     </div>
   )
 }
